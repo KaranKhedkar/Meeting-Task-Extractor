@@ -1,0 +1,452 @@
+{
+  "meetings": [
+    {
+      "meeting_id": "meeting-001-sprint-planning",
+      "split": "train",
+      "description": "Sprint planning meeting with API development, testing commitments, and general discussion",
+      "utterances": [
+        {
+          "speaker": "Rahul",
+          "text": "Good morning everyone, let's start the sprint planning session.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Rahul",
+          "text": "I'll finish the backend API by Wednesday.",
+          "label": "ACTION_ITEM",
+          "assignee": "Rahul",
+          "deadline_text": "by Wednesday"
+        },
+        {
+          "speaker": "Priya",
+          "text": "Amit, please review the interface before Friday.",
+          "label": "ACTION_ITEM",
+          "assignee": "Amit",
+          "deadline_text": "before Friday"
+        },
+        {
+          "speaker": "Amit",
+          "text": "The login page was deployed yesterday afternoon.",
+          "label": "COMPLETED_ACTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Priya",
+          "text": "Maybe we could redesign the navigation bar next sprint.",
+          "label": "SUGGESTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Sneha",
+          "text": "We need to submit the architecture proposal next week.",
+          "label": "ACTION_ITEM",
+          "assignee": null,
+          "deadline_text": "next week"
+        },
+        {
+          "speaker": "Rahul",
+          "text": "I already fixed the database migration issue this morning.",
+          "label": "COMPLETED_ACTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Amit",
+          "text": "We discussed the possibility of using PostgreSQL instead.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Sneha",
+          "text": "Could Amit check the latency logs before tomorrow's standup?",
+          "label": "ACTION_ITEM",
+          "assignee": "Amit",
+          "deadline_text": "before tomorrow"
+        },
+        {
+          "speaker": "Rahul",
+          "text": "We don't need to update the legacy billing code anymore.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        }
+      ]
+    },
+    {
+      "meeting_id": "meeting-002-design-sync",
+      "split": "train",
+      "description": "UI/UX design review and feedback sync",
+      "utterances": [
+        {
+          "speaker": "Priya",
+          "text": "The color contrast on the dashboard looks much better now.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Priya",
+          "text": "I will prepare the revised Figma mockups by tomorrow at 5 PM.",
+          "label": "ACTION_ITEM",
+          "assignee": "Priya",
+          "deadline_text": "by tomorrow"
+        },
+        {
+          "speaker": "Vikram",
+          "text": "What if we try a dark theme for the analytics view?",
+          "label": "SUGGESTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Priya",
+          "text": "Vikram, please update the icon set by Thursday.",
+          "label": "ACTION_ITEM",
+          "assignee": "Vikram",
+          "deadline_text": "by Thursday"
+        },
+        {
+          "speaker": "Vikram",
+          "text": "I completed the mobile typography audit last Friday.",
+          "label": "COMPLETED_ACTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Neha",
+          "text": "Someone should audit the accessibility contrast ratios.",
+          "label": "ACTION_ITEM",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Neha",
+          "text": "The illustrations are rendered nicely in SVG.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Priya",
+          "text": "I'll export the asset bundle for the frontend developers tonight.",
+          "label": "ACTION_ITEM",
+          "assignee": "Priya",
+          "deadline_text": "tonight"
+        },
+        {
+          "speaker": "Vikram",
+          "text": "Perhaps we could run an A/B test on the onboarding funnel.",
+          "label": "SUGGESTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Neha",
+          "text": "I won't change the hero banner until marketing approves it.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        }
+      ]
+    },
+    {
+      "meeting_id": "meeting-003-infra-incident",
+      "split": "train",
+      "description": "Production incident retrospective and remediation actions",
+      "utterances": [
+        {
+          "speaker": "Karan",
+          "text": "Thanks for joining the post-incident review for yesterday's outage.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Karan",
+          "text": "The root cause was a memory leak in the worker service.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Karan",
+          "text": "We rolled back the bad build yesterday within twenty minutes.",
+          "label": "COMPLETED_ACTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Rohan",
+          "text": "I will increase the Redis cluster replica count by Monday.",
+          "label": "ACTION_ITEM",
+          "assignee": "Rohan",
+          "deadline_text": "by Monday"
+        },
+        {
+          "speaker": "Karan",
+          "text": "Rohan, please configure automated memory alerts before Tuesday.",
+          "label": "ACTION_ITEM",
+          "assignee": "Rohan",
+          "deadline_text": "before Tuesday"
+        },
+        {
+          "speaker": "Deepa",
+          "text": "How about we set up synthetic traffic monitoring?",
+          "label": "SUGGESTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Deepa",
+          "text": "I'll draft the customer incident postmortem by end of day.",
+          "label": "ACTION_ITEM",
+          "assignee": "Deepa",
+          "deadline_text": "by end of day"
+        },
+        {
+          "speaker": "Karan",
+          "text": "The backup was restored successfully during the maintenance window.",
+          "label": "COMPLETED_ACTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Rohan",
+          "text": "Could we consider migrating from microservices to a modular monolith?",
+          "label": "SUGGESTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Deepa",
+          "text": "We must update our runbook documentation within three days.",
+          "label": "ACTION_ITEM",
+          "assignee": null,
+          "deadline_text": "within three days"
+        }
+      ]
+    },
+    {
+      "meeting_id": "meeting-004-marketing-sync",
+      "split": "train",
+      "description": "Product marketing, press release, and campaign planning",
+      "utterances": [
+        {
+          "speaker": "Ananya",
+          "text": "The email campaign open rates were twenty-eight percent.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Ananya",
+          "text": "I'll draft the product announcement newsletter by Friday.",
+          "label": "ACTION_ITEM",
+          "assignee": "Ananya",
+          "deadline_text": "by Friday"
+        },
+        {
+          "speaker": "Siddharth",
+          "text": "Ananya, please coordinate with the social media team tomorrow.",
+          "label": "ACTION_ITEM",
+          "assignee": "Ananya",
+          "deadline_text": "tomorrow"
+        },
+        {
+          "speaker": "Siddharth",
+          "text": "We already published the blog post on Wednesday.",
+          "label": "COMPLETED_ACTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Ananya",
+          "text": "Maybe we should invite tech influencers to the early beta.",
+          "label": "SUGGESTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Siddharth",
+          "text": "I will schedule the promotional tweets for next week.",
+          "label": "ACTION_ITEM",
+          "assignee": "Siddharth",
+          "deadline_text": "for next week"
+        },
+        {
+          "speaker": "Ananya",
+          "text": "The advertising budget looks reasonable for Q4.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Siddharth",
+          "text": "Let's assign someone to investigate the Google Ads conversion drop.",
+          "label": "ACTION_ITEM",
+          "assignee": null,
+          "deadline_text": null
+        }
+      ]
+    },
+    {
+      "meeting_id": "meeting-005-qa-testing",
+      "split": "test",
+      "description": "Held-out test meeting 1: QA cycle and regression testing",
+      "utterances": [
+        {
+          "speaker": "Arjun",
+          "text": "Welcome to the QA sync for release 1.4.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Arjun",
+          "text": "I will execute the regression test suite by tomorrow.",
+          "label": "ACTION_ITEM",
+          "assignee": "Arjun",
+          "deadline_text": "by tomorrow"
+        },
+        {
+          "speaker": "Meera",
+          "text": "Arjun, please verify the payment gateway bug fix before Thursday.",
+          "label": "ACTION_ITEM",
+          "assignee": "Arjun",
+          "deadline_text": "before Thursday"
+        },
+        {
+          "speaker": "Arjun",
+          "text": "I already tested the checkout flow yesterday and verified the fix.",
+          "label": "COMPLETED_ACTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Meera",
+          "text": "What if we automate the performance benchmark tests?",
+          "label": "SUGGESTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Meera",
+          "text": "We need to document the edge case scenarios before next Monday.",
+          "label": "ACTION_ITEM",
+          "assignee": null,
+          "deadline_text": "before next Monday"
+        },
+        {
+          "speaker": "Arjun",
+          "text": "The test coverage report shows eighty-five percent coverage.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Meera",
+          "text": "I'll create the bug tickets in Jira by this afternoon.",
+          "label": "ACTION_ITEM",
+          "assignee": "Meera",
+          "deadline_text": "by this afternoon"
+        },
+        {
+          "speaker": "Arjun",
+          "text": "We discussed the browser compatibility matrix earlier.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Meera",
+          "text": "We won't test Internet Explorer because it is deprecated.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        }
+      ]
+    },
+    {
+      "meeting_id": "meeting-006-client-demo-prep",
+      "split": "test",
+      "description": "Held-out test meeting 2: Client demonstration and deliverables",
+      "utterances": [
+        {
+          "speaker": "Dev",
+          "text": "The client presentation is scheduled for next Friday.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Dev",
+          "text": "Rahul, please prepare the presentation by Friday.",
+          "label": "ACTION_ITEM",
+          "assignee": "Rahul",
+          "deadline_text": "by Friday"
+        },
+        {
+          "speaker": "Rahul",
+          "text": "I will polish the demonstration slides by Wednesday.",
+          "label": "ACTION_ITEM",
+          "assignee": "Rahul",
+          "deadline_text": "by Wednesday"
+        },
+        {
+          "speaker": "Dev",
+          "text": "The sales team finalized the contract terms yesterday.",
+          "label": "COMPLETED_ACTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Shreya",
+          "text": "Maybe we could show the real-time analytics feature during the demo.",
+          "label": "SUGGESTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Shreya",
+          "text": "I'll populate the staging database with dummy accounts tomorrow.",
+          "label": "ACTION_ITEM",
+          "assignee": "Shreya",
+          "deadline_text": "tomorrow"
+        },
+        {
+          "speaker": "Dev",
+          "text": "The customer was very pleased with the speed of our delivery.",
+          "label": "NON_ACTIONABLE",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Shreya",
+          "text": "Dev, please send the meeting link to all stakeholders before Monday.",
+          "label": "ACTION_ITEM",
+          "assignee": "Dev",
+          "deadline_text": "before Monday"
+        },
+        {
+          "speaker": "Rahul",
+          "text": "I finished the testing last week.",
+          "label": "COMPLETED_ACTION",
+          "assignee": null,
+          "deadline_text": null
+        },
+        {
+          "speaker": "Dev",
+          "text": "Could Amit review the design before the next meeting?",
+          "label": "ACTION_ITEM",
+          "assignee": "Amit",
+          "deadline_text": "before the next meeting"
+        }
+      ]
+    }
+  ]
+}

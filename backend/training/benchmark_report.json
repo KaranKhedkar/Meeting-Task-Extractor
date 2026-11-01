@@ -1,0 +1,114 @@
+{
+  "dataset_summary": {
+    "name": "AMI Meeting Corpus + Enterprise Dialogue Benchmark",
+    "train_utterances": 11385,
+    "test_utterances": 3794,
+    "total_utterances": 15179
+  },
+  "classifier_comparison": [
+    {
+      "model": "Multinomial Naive Bayes",
+      "accuracy": 0.7301,
+      "macro_f1": 0.4137,
+      "weighted_f1": 0.7017,
+      "action_item_f1": 0.268,
+      "suggestion_f1": 0.508,
+      "completed_f1": 0.0526,
+      "non_actionable_f1": 0.8262,
+      "train_time_sec": 0.29,
+      "latency_ms": 0.015,
+      "action_item_recall": 0.1889
+    },
+    {
+      "model": "Linear SVM (LinearSVC)",
+      "accuracy": 0.7401,
+      "macro_f1": 0.6401,
+      "weighted_f1": 0.7369,
+      "action_item_f1": 0.445,
+      "suggestion_f1": 0.5858,
+      "completed_f1": 0.7059,
+      "non_actionable_f1": 0.8236,
+      "train_time_sec": 0.39,
+      "latency_ms": 0.014,
+      "action_item_recall": 0.4055
+    },
+    {
+      "model": "Random Forest",
+      "accuracy": 0.7414,
+      "macro_f1": 0.6311,
+      "weighted_f1": 0.7384,
+      "action_item_f1": 0.4077,
+      "suggestion_f1": 0.6107,
+      "completed_f1": 0.6866,
+      "non_actionable_f1": 0.8193,
+      "train_time_sec": 1.27,
+      "latency_ms": 0.047,
+      "action_item_recall": 0.3456
+    },
+    {
+      "model": "Logistic Regression (Balanced)",
+      "accuracy": 0.7338,
+      "macro_f1": 0.6547,
+      "weighted_f1": 0.7395,
+      "action_item_f1": 0.4659,
+      "suggestion_f1": 0.6145,
+      "completed_f1": 0.7246,
+      "non_actionable_f1": 0.8139,
+      "train_time_sec": 1.13,
+      "latency_ms": 0.015,
+      "action_item_recall": 0.5668
+    },
+    {
+      "model": "Rule-Based Baseline (spaCy + Patterns)",
+      "accuracy": 0.6434,
+      "macro_f1": 0.4243,
+      "weighted_f1": 0.5637,
+      "action_item_f1": 0.2064,
+      "suggestion_f1": 0.0327,
+      "completed_f1": 0.65,
+      "non_actionable_f1": 0.8082,
+      "train_time_sec": 0.0,
+      "latency_ms": 5.426
+    },
+    {
+      "model": "Hybrid Ensemble (LR + Rule Calibration)",
+      "accuracy": 0.7048,
+      "macro_f1": 0.6064,
+      "weighted_f1": 0.7184,
+      "action_item_f1": 0.3738,
+      "suggestion_f1": 0.5661,
+      "completed_f1": 0.6753,
+      "non_actionable_f1": 0.8103,
+      "train_time_sec": 1.13,
+      "latency_ms": 7.153
+    },
+    {
+      "model": "V2 Neural Transformer (RoBERTa-base Fine-Tuned)",
+      "accuracy": 0.7688,
+      "macro_f1": 0.6821,
+      "weighted_f1": 0.7765,
+      "action_item_f1": 0.544,
+      "action_item_recall": 0.7834,
+      "suggestion_f1": 0.681,
+      "completed_f1": 0.6667,
+      "non_actionable_f1": 0.8367,
+      "train_time_sec": 98.2,
+      "latency_ms": 18.6,
+      "is_v2": true
+    }
+  ],
+  "ner_and_slot_filling": {
+    "assignee_evaluation": {
+      "test_samples_with_assignee": 166,
+      "assignee_extraction_accuracy": 0.3373,
+      "raw_spacy_person_recall": 0.0422,
+      "methodology": "Combines spaCy PERSON entities with grammatical vocative direction and first-person speaker attribution."
+    },
+    "deadline_evaluation": {
+      "test_samples_with_deadlines": 66,
+      "temporal_phrase_detection_recall": 0.2576,
+      "iso_date_normalization_success_rate": 0.2273,
+      "methodology": "Combines dependency tree prepositional temporal attachments with dateparser relative anchoring."
+    }
+  }
+}

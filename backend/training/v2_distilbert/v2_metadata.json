@@ -1,0 +1,13 @@
+{
+  "model_architecture": "RobertaForSequenceClassification",
+  "backbone": "roberta-base",
+  "parameters": 124648708,
+  "test_accuracy": 0.7688455455983131,
+  "test_macro_f1": 0.682093157767791,
+  "classes": [
+    "NON_ACTIONABLE",
+    "SUGGESTION",
+    "ACTION_ITEM",
+    "COMPLETED_ACTION"
+  ]
+}
