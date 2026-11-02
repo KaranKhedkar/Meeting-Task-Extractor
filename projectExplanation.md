@@ -76,14 +76,61 @@ flowchart TD
 
 ---
 
-## 📅 3. Step-by-Step Chronological Journey (How We Built It)
+## 📂 3. The Dataset: What We Used, Where We Found It, and How We Built It
+
+Examiners always ask: *"Where did you get your dataset? Who created it? How did you label it?"*
+
+### 1. The Dataset Name & Origin
+* **Dataset Name**: **The AMI Meeting Corpus (Augmented Multi-party Interaction)**, Release 1.6.2.
+* **Creating Institutions**: An international academic research consortium led by the **University of Edinburgh (UK)** (Dr. Jean Carletta et al.), in partnership with the **IDIAP Research Institute (Switzerland)**, **TNO Human Factors (Netherlands)**, **ICSI (International Computer Science Institute, UC Berkeley)**, and the **University of Twente**.
+* **Research Funding**: Funded by the European Union 6th Framework Programme (EU FP6-506811).
+
+### 2. Where We Found & Downloaded It
+* **Official Research Portal**: [https://groups.inf.ed.ac.uk/ami/corpus/](https://groups.inf.ed.ac.uk/ami/corpus/)
+* **Direct Public Download Repository**: [https://groups.inf.ed.ac.uk/ami/download/](https://groups.inf.ed.ac.uk/ami/download/)
+* Specifically, we downloaded the official manual XML annotation package:  
+  `ami_public_manual_1.6.2.zip` (~21.8 MB compressed, containing full dialogue acts and word tokens).
+
+### 3. Why This Dataset?
+The AMI Corpus is the **gold-standard research benchmark** cited in computational linguistics and speech analysis literature:
+* Contains **100 hours of multi-party business and design meetings** recorded in instrumented rooms equipped with calibrated microphones and multi-angle cameras.
+* Features **genuine spontaneous human dialogue**: speakers talk over each other, interrupt, use informal colloquialisms (*"yeah"*, *"um"*, *"I'll grab that"*), and negotiate commitments naturally.
+
+### 4. How We Built & Annotated Our Dataset (`build_ami_corpus.py`)
+Raw AMI data is distributed as separate XML files for words (`words/*.words.xml`) and dialogue acts (`dialogueActs/*.dialog-act.xml`). We wrote an automated pipeline in `backend/training/build_ami_corpus.py` to parse and curate it:
+
+1. **Mapping AMI Dialogue Acts to Our 4 Target Classes**:
+   The AMI annotation scheme contains 15 detailed dialogue acts (`ami_da_1` to `ami_da_16`). We mapped them linguistically into 4 production classes:
+   * **`ACTION_ITEM`**: Mapped from `ami_da_7` (*Offer* — self-commitments like *"I will record who's here"*) and `ami_da_8` (*Elicit-Offer-Or-Suggestion* — direct requests like *"Can you review the design?"*).
+   * **`SUGGESTION`**: Mapped from `ami_da_6` (*Suggest* — proposals without firm commitment like *"Maybe we could use rubber instead"*).
+   * **`COMPLETED_ACTION`**: Captured using morphological past-tense aspect (`VBD`/`VBN`) with completion adverbs (*"already"*, *"finished"*, *"tested"*, *"deployed"*, *"implemented"*).
+   * **`NON_ACTIONABLE`**: Mapped from all informational, conversational, and procedural dialogue acts: `Inform` (`ami_da_4`), `Assess` (`ami_da_9`), `Backchannel` (`ami_da_1`), `Comment-About-Understanding` (`ami_da_12`), `Be-Positive` (`ami_da_14`), and `Stall` (`ami_da_2`).
+
+2. **Utterance & Word Reconstruction**:
+   Cross-referenced word ID pointers from the dialogue act XMLs to the timestamped token files, assembling full, continuous speaker turns with speaker attribution (`Speaker_A`, `Speaker_B`, etc.).
+
+3. **Curation & Final Corpus Size**:
+   Filtered and curated **86 multi-party meetings**, producing **15,179 clean, fully attributed dialogue utterances** saved in:
+   [`backend/training/dataset_large.json`](file:///e:/AIML%20PROJECT%20(FINAL%20YEAR)/backend/training/dataset_large.json) (4.14 MB).
+
+### 5. Zero-Leakage Group Partitioning
+To guarantee academic integrity, the dataset was partitioned **strictly by whole meeting IDs (Group Split)** rather than random sentence shuffling:
+* **Train Set**: 64 whole meetings (**11,385 utterances**)
+* **Held-Out Test Set**: 22 whole meetings (**3,794 utterances**)
+* *Why this matters*: Zero speaker voices, project topics, or meeting sessions overlap between train and test sets, proving genuine real-world generalization.
+
+#### Class Distribution in the Benchmark:
+* `NON_ACTIONABLE`: **10,096** utterances (7,574 train / 2,522 test) — **66.5%**
+* `SUGGESTION`: **3,989** utterances (2,968 train / 1,021 test) — **26.3%**
+* `ACTION_ITEM`: **945** utterances (728 train / 217 test) — **6.2%**
+* `COMPLETED_ACTION`: **149** utterances (115 train / 34 test) — **1.0%**
+
+---
+
+## 📅 4. Step-by-Step Chronological Journey (How We Built It)
 
 ### Step 1: Data Modeling & Schema Design
-We initiated the project by designing Pydantic V2 and SQLAlchemy database schemas (`meeting.py`, `task.py`). We established 4 mutually exclusive dialogue act classes:
-- **`ACTION_ITEM`**: A commitment or request for future work (*"I will update the API"*).
-- **`SUGGESTION`**: A proposal without firm commitment (*"Maybe we could switch libraries"*).
-- **`COMPLETED_ACTION`**: A finished task reported as status (*"I pushed the hotfix yesterday"*).
-- **`NON_ACTIONABLE`**: Casual greetings, procedural chatter, and questions (*"Good morning everyone"*).
+We initiated the project by designing Pydantic V2 and SQLAlchemy database schemas (`meeting.py`, `task.py`). We established the 4 mutually exclusive dialogue act classes defined above.
 
 ### Step 2: Stage A — Transcript Preprocessing & WebVTT Parsing
 Spoken transcripts contain cues, timestamps, and speaker tags. In `preprocessing.py`:
@@ -109,7 +156,7 @@ We trained and benchmarked 6 classical models on TF-IDF unigram and bigram featu
 
 ---
 
-## 🔬 4. The V2 Breakthrough: Deep Learning & Failure Analysis
+## 🔬 5. The V2 Breakthrough: Deep Learning & Failure Analysis
 
 ### Why Classical ML Hit a Ceiling
 Classical Bag-of-Words and TF-IDF lack sequential memory. They cannot understand:
@@ -124,13 +171,7 @@ This justified fine-tuning a deep Bidirectional Transformer.
 *(This is the most impressive academic talking point during your viva!)*
 
 #### The Phenomenon:
-The real-world **AMI Meeting Corpus (1.6.2)** contains **15,179 utterances**:
-- `NON_ACTIONABLE` (Chatter): **10,096** (66.5%)
-- `SUGGESTION`: **3,989** (26.3%)
-- `ACTION_ITEM`: **945** (6.2%)
-- `COMPLETED_ACTION`: **149** (1.0%)
-
-When an unconstrained transformer is trained on raw meeting dialogues, the Cross-Entropy loss function rewards the model for minimizing overall loss by guessing the majority class:
+In raw meeting dialogues, **66.5% of speech is non-actionable chatter**. When an unconstrained transformer was initially trained on raw data, the Cross-Entropy loss rewarded the network for predicting Class 0 (`NON_ACTIONABLE`) for 100% of samples:
 $$\text{Accuracy} = \frac{2,522 \text{ (Non-Actionable Test Utterances)}}{3,794 \text{ (Total Test Utterances)}} = 0.6647 \quad (66.47\%)$$
 
 #### The Failed Result:
@@ -167,9 +208,9 @@ During Colab GPU training, `microsoft/deberta-v3-base` triggered:
 
 ---
 
-## 📊 5. Comprehensive Multi-Model Benchmark
+## 📊 6. Comprehensive Multi-Model Benchmark
 
-Evaluated on the **3,794 unseen held-out AMI test utterances** (Group Split by whole meetings to prevent cross-meeting data leakage):
+Evaluated on the **3,794 unseen held-out AMI test utterances** (Group Split by whole meetings):
 
 | Model Architecture | Accuracy | Action-Item F1 | Action-Item Recall | Macro F1 | Weighted F1 | Inference Latency |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -193,7 +234,7 @@ True Completed            8                 0               0             26
 
 ---
 
-## 🧠 6. The Hybrid Neural-Symbolic Consensus Layer
+## 🧠 7. The Hybrid Neural-Symbolic Consensus Layer
 
 Neither pure deep learning nor pure rules are sufficient on their own. We designed a **Neural-Symbolic Consensus Layer**:
 
@@ -209,7 +250,7 @@ Neither pure deep learning nor pure rules are sufficient on their own. We design
 
 ---
 
-## 🎙️ 7. Audio Intelligence: Local Faster-Whisper Pipeline
+## 🎙️ 8. Audio Intelligence: Local Faster-Whisper Pipeline
 
 In `backend/app/services/audio_transcriber.py`:
 - Ingests audio files (`.mp3`, `.wav`, `.m4a`, `.ogg`, `.webm`).
@@ -219,7 +260,7 @@ In `backend/app/services/audio_transcriber.py`:
 
 ---
 
-## 💻 8. User Interface & Experience Design
+## 💻 9. User Interface & Experience Design
 
 The web application is built with **React 19, Vite, and Lucide Icons**, following an enterprise design system inspired by **Linear and Notion**:
 - **Workspace Studio**: Clean multi-modal input (text paste, WebVTT file upload, or direct audio file upload).
@@ -231,49 +272,48 @@ The web application is built with **React 19, Vite, and Lucide Icons**, followin
 
 ---
 
-## 🎓 9. Top 10 Viva / Professor Questions & Winning Answers
+## 🎓 10. Top Viva / Professor Questions & Winning Answers
 
 Here are the exact answers to the toughest questions your examiners will ask:
 
-### Q1: "What is your contribution? Isn't this just an off-the-shelf library?"
+### Q1: "Which dataset did you use, where did you find it, and who created it?"
+> **Answer**:  
+> *"We used the **AMI Meeting Corpus (Release 1.6.2)**, which is the international benchmark for multi-party conversational dialogue analysis. It was created by an academic consortium led by the **University of Edinburgh** along with the **IDIAP Research Institute (Switzerland)**, **TNO (Netherlands)**, and **ICSI Berkeley**, funded by the European Union FP6 programme.*  
+> *We downloaded the official manual XML annotation package (`ami_public_manual_1.6.2.zip`) from Edinburgh's public portal (`https://groups.inf.ed.ac.uk/ami/corpus/`). Through our `build_ami_corpus.py` script, we mapped the original 15 dialogue act codes into our 4 production classes, producing a curated benchmark of **86 meetings and 15,179 utterances**."*
+
+### Q2: "What is your core scientific contribution? Isn't this just an off-the-shelf library?"
 > **Answer**:  
 > *"No, sir/ma'am. Pre-trained models fail on meeting dialogues because conversational speech is 70% casual chatter. Our contributions are three-fold:*  
-> *1. We built a **Stratified High-Signal Resampling** pipeline that cured majority-class collapse, boosting action recall from 0% to 78.34%.*  
+> *1. We discovered and solved **Majority-Class Collapse** via a **Stratified High-Signal Resampling** pipeline, boosting action recall from 0% to 78.34%.*  
 > *2. We engineered a **Grammar-Guided Dependency Slot-Filling Engine** that outperforms standard spaCy PERSON extraction by 8.0x (33.7% vs 4.2%).*  
 > *3. We implemented a **Neural-Symbolic Consensus Layer** combining temperature-calibrated transformer probabilities with deterministic linguistic guardrails."*
 
-### Q2: "Why did you split the dataset by meeting ID instead of random train_test_split?"
+### Q3: "Why did you split the dataset by meeting ID instead of random train_test_split?"
 > **Answer**:  
 > *"If we split utterances randomly using standard `train_test_split`, sentences from the same meeting would appear in both training and testing sets. The model would memorize specific speaker names, meeting topics, and vocabulary, causing catastrophic **data leakage** and inflated test scores. By using **Group Split by Meeting ID** (64 train meetings, 22 test meetings), our test set consists 100% of unseen meetings and speakers, guaranteeing true generalization."*
 
-### Q3: "What is Majority-Class Collapse and how did you solve it?"
+### Q4: "What is Majority-Class Collapse and how did you solve it?"
 > **Answer**:  
 > *"In dialogue corpora, 66.5% of speech is non-actionable chatter. Standard Cross-Entropy loss rewards the network for predicting Class 0 for every sentence, scoring 66.47% accuracy while completely failing to detect action items (0% recall). We solved this by duplicate-resampling rare action items and completed actions while downsampling chatter, raising action items from 6.2% to 31.6% of training batches."*
 
-### Q4: "Why did you use RoBERTa instead of BERT or DeBERTa?"
+### Q5: "Why did you use RoBERTa instead of BERT or DeBERTa?"
 > **Answer**:  
 > *"Standard BERT was trained with Next Sentence Prediction (NSP), which is suboptimal for single-sentence intent classification. DeBERTa-v3 has an open bug with PyTorch AMP GradScaler on GPU due to its relative position embedding tensors. RoBERTa-base was trained with dynamic masking on larger corpora without NSP, and natively supports mixed precision FP16 with zero tensor mismatches."*
 
-### Q5: "What is Temperature Scaling and why did you use T=0.55?"
+### Q6: "What is Temperature Scaling and why did you use T=0.55?"
 > **Answer**:  
 > *"Deep neural networks with cross-entropy loss are frequently miscalibrated—they output overconfident or diffused softmax probabilities. Temperature scaling divides the raw logits by a scalar $T$ before softmax. Using $T=0.55$ sharpens the probability distribution without altering class rank order, allowing our downstream thresholding to clearly separate high-confidence commitments from ambiguous chatter."*
 
-### Q6: "How do you extract the Assignee when someone says 'I will do it' vs 'Amit, please do it'?"
+### Q7: "How do you extract the Assignee when someone says 'I will do it' vs 'Amit, please do it'?"
 > **Answer**:  
 > *"We use a two-pronged grammatical approach in `assignee_extractor.py`:*  
 > *1. For first-person commitments ('I will', 'I'll'), the system attributes the task to the turn speaker metadata parsed in Stage A.*  
 > *2. For directed requests ('Amit, please review'), we extract vocative noun phrases preceding imperative verbs using dependency parse relations and entity boundary matching.*  
 > *3. For collective obligations ('We need to'), the assignee is set to null and flagged for human review."*
 
-### Q7: "How are relative deadlines like 'by next Wednesday' converted to exact calendar dates?"
+### Q8: "How are relative deadlines like 'by next Wednesday' converted to exact calendar dates?"
 > **Answer**:  
 > *"In spoken meetings, people don't say 'October 28th'—they say 'by tomorrow' or 'next Friday'. Our `deadline_extractor.py` anchors all extracted temporal expressions against the user-specified **Meeting Reference Date** using dateparser and delta arithmetic, outputting a strict ISO-8601 string (`YYYY-MM-DD`)."*
-
-### Q8: "How do you distinguish between an Action Item and a Completed Action?"
-> **Answer**:  
-> *"Through morphological tense and temporal adverbs:*  
-> *- An Action Item uses base-form verbs in imperative mood or future modal frames ('I will deploy').*  
-> *- A Completed Action uses past-participle/past-tense aspect (`VBD`/`VBN`) combined with past temporal anchors ('deployed yesterday', 'already completed')."*
 
 ### Q9: "What is the computational complexity and latency of your system?"
 > **Answer**:  
